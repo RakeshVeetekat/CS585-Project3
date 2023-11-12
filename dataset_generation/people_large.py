@@ -15,7 +15,7 @@ def generate_data(size):
     id = 0
     filename = "../datasets/people-large.csv"
     with open(filename, "w+") as f:
-        while(id < 100000):
+        while(id < 1900000):
             if id == 0:
                 f.write("ID, x, y, age\n")
             arr = generate_coordinates()
