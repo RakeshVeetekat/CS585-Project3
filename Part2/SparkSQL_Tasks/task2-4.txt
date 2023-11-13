@@ -1,0 +1,20 @@
+val CustomerDF=spark.read.option("header",true).option("inferSchema",true).csv("C:/Users/ganer/Documents/classes2023/fall/Big_data/project3/Customer.csv")
+val PurchaseDF=spark.read.option("header",true).option("inferSchema",true).csv("C:/Users/ganer/Documents/classes2023/fall/Big_data/project3/Purchase.csv")
+PurchaseDF.printSchema()
+CustomerDF.printSchema()
+PurchaseDF.createOrReplaceTempView("PurchaseView")
+val T1=spark.sql("""SELECT * FROM PurchaseView P WHERE TransTotal>=600""")
+T1.createOrReplaceTempView("T1View")
+CustomerDF.where("Age between 18 and 25").createOrReplaceTempView("YoungCustomerView")
+val T3=spark.sql("""SELECT cus.ID, cus.AGE, SUM(TransTotal) AS TotalAmount,SUM(TransNumItems) AS TotalNumberOfItems FROM T1View t1 INNER JOIN YoungCustomerView cus ON t1.CustID=cus.ID GROUP BY cus.ID, cus.AGE""")
+T3.createOrReplaceTempView("T3View")
+val T4=spark.sql("""SELECT c1.ID as C1_ID, c2.ID as C2_ID, c1.Age as Age1, c2.age as Age2, c1.TotalAmount as TotalAmount1, c2.TotalAmount TotalAmount2, c1.TotalNumberOfItems  as TotalNumberOfItems1, c2.TotalNumberOfItems as TotalNumberOfItems2 FROM T3View c1 inner join T3View c2 on c1.Age<c2.Age where c1.TotalAmount>c2.TotalAmount and c1.TotalNumberOfItems<c2.TotalNumberOfItems""")
+T4.show()
+T4.write.option("header",true).mode("overwrite").csv("C:/Users/ganer/Documents/classes2023/fall/Big_data/project3/T4.csv")
+
+
+
+
+
+ 
+
