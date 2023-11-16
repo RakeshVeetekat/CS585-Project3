@@ -1,3 +1,4 @@
+import math
 import findspark
 findspark.init()
 
@@ -5,6 +6,14 @@ from pyspark import SparkConf, SparkContext
 
 def close_contact(personA, personB):
     # compute euclidean distance here
+    personA_x = int(personA.split(",")[1])
+    personA_y = int(personA.split(",")[2])
+    personB_x = int(personB.split(",")[1])
+    personB_y = int(personB.split(",")[2])
+    if math.dist([personA_x,personA_y],[personB_x,personB_y]) <= 6:
+        return True
+    else:
+        return False
     pass
 
 
@@ -21,9 +30,11 @@ def main():
 
     with open("output_rdd.txt", "w") as f:
         for infected_person in rddInfected.collect():
-            for person in all_people:
-                if close_contact(infected_person, person):
-                    f.write("infected person, close contact")
+            if infected_person != 'ID, x, y, age':
+                for person in all_people:
+                    if person != 'ID, x, y, age':
+                        if close_contact(infected_person, person):
+                            f.write("P_ID: " + person.split(",")[0] + ", Infected-ID: " + infected_person.split(",")[0] + "\n")
 
     f.close()
 
