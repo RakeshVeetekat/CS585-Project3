@@ -4,6 +4,7 @@ findspark.init()
 
 from pyspark import SparkConf, SparkContext
 
+# remove the duplicates from the output
 def check_duplicate(f, person):
     all_entries = f.readlines()
     for x in all_entries:
@@ -12,8 +13,9 @@ def check_duplicate(f, person):
 
     return False
 
+
+#check to see if a person is a close contact with euclidean distance
 def close_contact(personA, personB):
-    # compute euclidean distance here
     personA_x = int(personA.split(",")[1])
     personA_y = int(personA.split(",")[2])
     personB_x = int(personB.split(",")[1])
@@ -24,7 +26,7 @@ def close_contact(personA, personB):
         return False
     
 
-
+#main function of the program
 def main():
     # Configure Spark
     conf = SparkConf().setAppName("Query1")
@@ -51,6 +53,7 @@ def main():
 
     # Stop Spark context
     sc.stop()
+
 
 if __name__ == '__main__':
     main()
