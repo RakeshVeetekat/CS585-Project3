@@ -4,6 +4,14 @@ findspark.init()
 
 from pyspark import SparkConf, SparkContext
 
+def check_duplicate(f, person):
+    all_entries = f.readlines()
+    for x in all_entries:
+        if person.split(",")[0] in x:
+            return True
+
+    return False
+
 def close_contact(personA, personB):
     # compute euclidean distance here
     personA_x = int(personA.split(",")[1])
@@ -14,7 +22,7 @@ def close_contact(personA, personB):
         return True
     else:
         return False
-    pass
+    
 
 
 def main():
@@ -33,7 +41,7 @@ def main():
             if infected_person != 'ID, x, y, age':
                 for person in all_people:
                     if person != 'ID, x, y, age':
-                        if close_contact(infected_person, person):
+                        if close_contact(infected_person, person) and check_duplicate(f, person) == False:
                             f.write("P_ID: " + person.split(",")[0] + ", Infected-ID: " + infected_person.split(",")[0] + "\n")
 
     f.close()
