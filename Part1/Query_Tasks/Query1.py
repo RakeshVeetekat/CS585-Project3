@@ -3,26 +3,35 @@ findspark.init()
 
 from pyspark import SparkConf, SparkContext
 
-# Configure Spark
-conf = SparkConf().setAppName("Query1")
-sc = SparkContext(conf=conf)
+def close_contact(personA, personB):
+    # compute euclidean distance here
+    pass
 
-# Read input file
-rddAllPeople = sc.textFile("../DataCreation/datasets/people-large.csv")
-rddInfected = sc.textFile("../DataCreation/datasets/infected-small.csv")
 
-# Filter for all the close contacts to infected people
-def f(x):
-    print(x)
-    line = x.split(",")
-    infectedID = line[0]
-    infectedX = line[1]
-    infectedY = line[2]
+def main():
+    # Configure Spark
+    conf = SparkConf().setAppName("Query1")
+    sc = SparkContext(conf=conf)
 
-output = rddInfected.map(f)
+    # Read input file
+    rddAllPeople = sc.textFile("../DataCreation/datasets/people-large.csv")
+    rddInfected = sc.textFile("../DataCreation/datasets/infected-small.csv")
 
-# Save results to a file
-output.saveAsTextFile("output")
+    all_people = rddAllPeople.collect()
 
-# Stop Spark context
-sc.stop()
+    with open("output_rdd.txt", "w") as f:
+        for infected_person in rddInfected.collect():
+            for person in all_people:
+                if close_contact(infected_person, person):
+                    f.write("infected person, close contact")
+
+    f.close()
+
+    output = sc.textFile("output_rdd.txt")
+    output.saveAsTextFile("results")
+
+    # Stop Spark context
+    sc.stop()
+
+if __name__ == '__main__':
+    main()
