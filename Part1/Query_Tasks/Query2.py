@@ -35,7 +35,7 @@ def close_contact(personA, personB):
 #main function of the program
 def main():
     # Configure Spark
-    conf = SparkConf().setAppName("Query1")
+    conf = SparkConf().setAppName("Query2")
     sc = SparkContext(conf=conf)
 
     # Read input file
