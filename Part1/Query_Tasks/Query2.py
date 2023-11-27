@@ -1,4 +1,6 @@
 import math
+import os
+
 import findspark
 findspark.init()
 
@@ -6,7 +8,11 @@ from pyspark import SparkConf, SparkContext
 
 # remove the duplicates from the output
 def check_duplicate(f, person):
-    all_entries = f.readlines()
+    if os.stat("output_rdd.txt").st_size != 0:
+        all_entries = f.readlines()
+    else:
+        return False
+
     for x in all_entries:
         if person.split(",")[0] in x:
             return True
