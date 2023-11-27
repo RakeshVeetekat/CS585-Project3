@@ -29,7 +29,7 @@ def main():
     people_first_loop = rdd1.collect()
 
     # If the current person is infected, loop through rdd2 to determine number of close contacts
-    with open("output_rdd.txt", "w") as f:
+    with open("output_rdd_query3.txt", "w") as f:
         for current_person in people_first_loop:
             closeContactCount = 0
             # If the current person is infected, then loop through everyone to find close contacts
@@ -42,8 +42,8 @@ def main():
 
     f.close()
 
-    output = sc.textFile("output_rdd.txt")
-    output.saveAsTextFile("results")
+    output = sc.textFile("output_rdd_query3.txt")
+    output.saveAsTextFile("results_query3")
 
     # Stop Spark context
     sc.stop()

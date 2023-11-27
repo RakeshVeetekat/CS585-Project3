@@ -28,7 +28,7 @@ def main():
 
     all_people = rddAllPeople.collect()
 
-    with open("output_rdd.txt", "w") as f:
+    with open("output_rdd_query1.txt", "w") as f:
         for infected_person in rddInfected.collect():
             if infected_person != 'ID, x, y, age':
                 for person in all_people:
@@ -38,8 +38,8 @@ def main():
 
     f.close()
 
-    output = sc.textFile("output_rdd.txt")
-    output.saveAsTextFile("results")
+    output = sc.textFile("output_rdd_query1.txt")
+    output.saveAsTextFile("results_query1")
 
     # Stop Spark context
     sc.stop()

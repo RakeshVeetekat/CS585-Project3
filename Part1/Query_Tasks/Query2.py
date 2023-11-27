@@ -8,7 +8,7 @@ from pyspark import SparkConf, SparkContext
 
 # remove the duplicates from the output
 def check_duplicate(f, person):
-    if os.stat("output_rdd.txt").st_size != 0:
+    if os.stat("output_rdd_query2.txt").st_size != 0:
         all_entries = f.readlines()
     else:
         return False
@@ -44,7 +44,7 @@ def main():
 
     all_people = rddAllPeople.collect()
 
-    with open("output_rdd.txt", "w") as f:
+    with open("output_rdd_query2.txt", "w") as f:
         for infected_person in rddInfected.collect():
             if infected_person != 'ID, x, y, age':
                 for person in all_people:
@@ -54,8 +54,8 @@ def main():
 
     f.close()
 
-    output = sc.textFile("output_rdd.txt")
-    output.saveAsTextFile("results")
+    output = sc.textFile("output_rdd_query2.txt")
+    output.saveAsTextFile("results_query2")
 
     # Stop Spark context
     sc.stop()
