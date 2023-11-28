@@ -3,7 +3,7 @@ val PurchaseDF=spark.read.option("header",true).option("inferSchema",true).csv("
 PurchaseDF.printSchema()
 CustomerDF.printSchema()
 PurchaseDF.createOrReplaceTempView("PurchaseView")
-val T1=spark.sql("""SELECT * FROM PurchaseView P WHERE TransTotal>=600""")
+val T1=spark.sql("""SELECT * FROM PurchaseView P WHERE TransTotal<=600""")
 T1.createOrReplaceTempView("T1View")
 CustomerDF.where("Age between 18 and 25").createOrReplaceTempView("YoungCustomerView")
 val T3=spark.sql("""SELECT cus.ID, cus.AGE, SUM(TransTotal) AS TotalAmount,SUM(TransNumItems) AS TotalNumberOfItems FROM T1View t1 INNER JOIN YoungCustomerView cus ON t1.CustID=cus.ID GROUP BY cus.ID, cus.AGE""")
