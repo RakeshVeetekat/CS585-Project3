@@ -33,7 +33,7 @@ def main():
             if infected_person != 'ID, x, y, age':
                 for person in all_people:
                     if person != 'ID, x, y, age':
-                        if close_contact(infected_person, person):
+                        if close_contact(infected_person, person) and person.split(",")[0] != infected_person.split(",")[0]:
                             f.write("P_ID: " + person.split(",")[0] + ", Infected-ID: " + infected_person.split(",")[0] + "\n")
 
     f.close()

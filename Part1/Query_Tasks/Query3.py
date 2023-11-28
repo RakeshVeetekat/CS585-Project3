@@ -36,7 +36,7 @@ def main():
             if current_person != 'ID, x, y, age,INFECTED' and current_person.split(",")[4] == 'true':
                 for possible_close_contacts in rdd2.collect():
                     if possible_close_contacts != 'ID, x, y, age,INFECTED':
-                        if close_contact(current_person, possible_close_contacts):
+                        if close_contact(current_person, possible_close_contacts) and current_person.split(",")[0] != possible_close_contacts.split(",")[0]:
                             closeContactCount+=1
                 f.write("Infected-ID: " + current_person.split(",")[0] + ", Close-Contact-Count: " + str(closeContactCount) + "\n")
 
