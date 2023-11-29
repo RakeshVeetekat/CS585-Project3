@@ -44,13 +44,22 @@ def main():
 
     all_people = rddAllPeople.collect()
 
-    with open("output_rdd_query2.txt", "w") as f:
-        for infected_person in rddInfected.collect():
-            if infected_person != 'ID, x, y, age':
-                for person in all_people:
-                    if person != 'ID, x, y, age':
-                        if close_contact(infected_person, person) and check_duplicate(f, person) == False and person.split(",")[0] != infected_person.split(",")[0]:
+    # with open("output_rdd_query2.txt", "a+") as f:
+    #     for infected_person in rddInfected.collect():
+    #         if infected_person != 'ID, x, y, age':
+    #             for person in all_people:
+    #                 if person != 'ID, x, y, age':
+    #                     if close_contact(infected_person, person) and check_duplicate(f, person) == False and person.split(",")[0] != infected_person.split(",")[0]:
+    #                         f.write("P_ID: " + person.split(",")[0] + ", Infected-ID: " + infected_person.split(",")[0] + "\n")
+
+    with open("output_rdd_query2.txt", "a+") as f:
+        for person in all_people:
+            if person != 'ID, x, y, age':
+                for infected_person in rddInfected.collect():
+                    if infected_person != 'ID, x, y, age':
+                        if close_contact(infected_person, person) and person.split(",")[0] != infected_person.split(",")[0]:
                             f.write("P_ID: " + person.split(",")[0] + ", Infected-ID: " + infected_person.split(",")[0] + "\n")
+                            break
 
     f.close()
 
